@@ -94,7 +94,7 @@ rssGroup = (filter(lambda rss: rss.Name == rss_group_name and rss.ReferencedRadi
 if rssGroup is not None:
     print("Found corresponding RSS group " + rssGroup.Name)
 
-discrete_doses = rssGroup.DiscreteFractionDoseScenarios + [nominal_dose]
+discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios) + [nominal_dose]
 
 print("Finished RSS Groups")
 
