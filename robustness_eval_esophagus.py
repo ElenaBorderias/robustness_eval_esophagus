@@ -60,8 +60,8 @@ try:
     rss_group_name = "ROB_EVAL_SE_RE"
 
     # Run robustness evaluation range error (RE) and setup error (SE)
-
-    beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
+    try:
+        beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
                                              UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
                                              PositionUncertaintySuperior=setup_error,
                                              PositionUncertaintyInferior=setup_error,
@@ -74,6 +74,8 @@ try:
                                              DensityUncertainty=range_error,
                                              NumberOfDensityDiscretizationPoints=nb_density_discretization_points,
                                              ComputeScenarioDosesAfterGroupCreation=True)
+    except:
+        print "Scenario Group" + plan_name + " Exists already"
 
     # Reading a dose
     nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
