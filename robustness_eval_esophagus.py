@@ -75,8 +75,9 @@ try:
                                                  DensityUncertainty=range_error,
                                                  NumberOfDensityDiscretizationPoints=nb_density_discretization_points,
                                                  ComputeScenarioDosesAfterGroupCreation=True)
-    except:
+    except Exception:
         print "Scenario Group" + rss_group_name + " Exists already"
+        pass
 
     # Reading a dose
     nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
@@ -162,4 +163,4 @@ try:
 
 except Exception:
     print "You broke shit."
-    print str(Exception)
+    raise
