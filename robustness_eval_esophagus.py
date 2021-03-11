@@ -165,7 +165,7 @@ print("Finished Dose Relative Volume ROIs")
 
 print("Writing results...")
 output_path = "Z:\\"
-with open('data.json', 'w') as f:
+with open(output_path + 'data.json', 'w') as f:
     json.dump(results, f)
 print("Written results!")
 print("Done")
