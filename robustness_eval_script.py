@@ -57,7 +57,7 @@ try:
     plan = case.TreatmentPlans[plan_name]
     beam_set = plan.BeamSets[0]
 
-    rss_group_name = "Rob_eval_RE_SE"
+    rss_group_name = "ROB_EVAL_SE_RE"
 
     # Run robustness evaluation range error (RE) and setup error (SE)
 
