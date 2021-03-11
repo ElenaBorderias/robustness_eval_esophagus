@@ -9,7 +9,7 @@ case = get_current("Case")
 # clean up into objects
 
 plan_name = "Average_7mm_DO_s"
-ct_ref_name = "Avg CT"
+ct_ref_name = "Average CT"
 phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
@@ -80,7 +80,7 @@ except Exception:
 
 # Reading a dose
 nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
-patient_model = case.PatientModel.StructureSets[0]
+patient_model = case.PatientModel.StructureSets[ct_ref_name]
 
 ## Storing Results
 results = {}
