@@ -136,7 +136,7 @@ dose_relative_volume_rois = [
         'label': 'iCTV_45',
         'metric': 'V95',
         'name': 'MT_iCTVt_4500',
-        'RelativeVolumes': [0.95],
+        'relativeVolumes': [0.95],
         'roi_type': "target",
     },
     {
