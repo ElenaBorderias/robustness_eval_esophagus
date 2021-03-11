@@ -32,8 +32,22 @@ def get_key(value):
     return value['label'] + '_' + value['metric']
 
 
-# def worse_dose_roi(doses, roi):
-#
+def get_dose_statistic(dose, roi_name, dose_type):
+    return round(dose.GetDoseStatistic(RoiName=roi_name, DoseType=dose_type) * 0.01, 2)
+
+def get_dose_at_relative_volume(dose, roi_name, relative_volumes):
+    return round(float(
+        dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
+                                      RelativeVolumes=relative_volumes)) * 0.01, 2)
+
+
+def worst_dose(doses, roi_type, dose_calculation):
+    calculated_doses = map(dose_calculation, doses)
+    if roi_type == "target":
+        return min(calculated_doses)
+    if roi_type == 'organ_at_risk':
+        return max(calculated_doses)
+
 
 
 ###############################################################################
@@ -42,9 +56,11 @@ def get_key(value):
 plan = case.TreatmentPlans[plan_name]
 beam_set = plan.BeamSets[0]
 
+rss_group_name = "Rob_eval_RE_SE"
+
 # Run robustness evaluation range error (RE) and setup error (SE)
 
-beam_set.CreateRadiationSetScenarioGroup(Name=r"Rob_eval_RE_SE",
+beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
                                          UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
                                          PositionUncertaintySuperior=setup_error,
                                          PositionUncertaintyInferior=setup_error,
@@ -72,19 +88,36 @@ dose_statistics_rois = [
         'metric': 'Dmean',
         'name': 'MT_CTVt_4500',
         'doseType': 'Average',
+        'roi_type': 'target',
     },
     {
         'label': 'iCTV_45',
         'metric': 'Dmean',
         'name': 'MT_iCTVt_4500',
         'doseType': 'Average',
+        'roi_type': 'target',
     }
 ]
 
-for dose_stat_roi in dose_statistics_rois:
-    results[get_key(dose_stat_roi)] = round(
-        nominal_dose.GetDoseStatistic(RoiName=dose_stat_roi['name'], DoseType=dose_stat_roi['doseType']) * 0.01, 2)
+rssGroups = case.TreatmentDelivery.RadiationSetScenariosGroups
 
+# correct group rss.Name == rss_group_name && rss.ReferencedRaditionSet.DicomPlanLabel == plan_name
+rssGroup = (filter(lambda rss: rss.Name == rss_group_name and rss.ReferencedRaditionSet.DicomPlanLabel == plan_name,
+                   rssGroups))[0]
+
+if rssGroup is not None:
+    print("Found corresponding RSS group " + rssGroup.Name)
+
+discrete_doses = rssGroup.DiscreteFractionDoseScenarios + [nominal_dose]
+
+for dose_stat_roi in dose_statistics_rois:
+    results[get_key(dose_stat_roi) + '_nominal'] = get_dose_statistic(nominal_dose, dose_stat_roi['name'],
+                                                                      dose_stat_roi['doseType'])
+    results[get_key(dose_stat_roi) + '_worst'] = worst_dose(discrete_doses,
+                                                            dose_stat_roi['roi_type'],
+                                                            lambda dose: get_dose_statistic(dose,
+                                                                                                dose_stat_roi['name'],
+                                                                                                dose_stat_roi['doseType']))
 
 # Get relative volume based ROIs
 dose_relative_volume_rois = [
@@ -93,17 +126,21 @@ dose_relative_volume_rois = [
         'metric': 'V95',
         'name': 'MT_CTVt_4500',
         'RelativeVolumes': [0.95],
+        'roi_type': 'target',
     },
     {
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'SpinalCord',
         'relativeVolumes': [get_relative_volume_roi_geometries(patient_model, 'SpinalCord', 0.05)],
+        'roi_type': 'organ_at_risk',
     },
 ]
 
 for dose_relative_volume_roi in dose_relative_volume_rois:
-    results[get_key(dose_relative_volume_roi)] = round(float(
-        nominal_dose.GetDoseAtRelativeVolumes(RoiName=dose_relative_volume_roi['name'],
-                                              RelativeVolumes=dose_relative_volume_roi['relativeVolumes'])) * 0.01, 2)
-
+    results[get_key(dose_relative_volume_roi) + '_nominal'] = get_dose_at_relative_volume(nominal_dose, dose_relative_volume_roi['name'], dose_relative_volume_roi['relativeVolumes'])
+    results[get_key(dose_relative_volume_roi) + '_worst'] = worst_dose(discrete_doses,
+                                                                       dose_relative_volume_roi['roi_type'],
+                                                                       lambda dose: get_dose_at_relative_volume(dose,
+                                                                                                                    dose_relative_volume_roi['name'],
+                                                                                                                    dose_relative_volume_roi['relativeVolumes'])
