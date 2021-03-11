@@ -76,7 +76,7 @@ try:
                                                  NumberOfDensityDiscretizationPoints=nb_density_discretization_points,
                                                  ComputeScenarioDosesAfterGroupCreation=True)
     except Exception:
-        print "Scenario Group" + rss_group_name + " exists already"
+        print("Scenario Group" + rss_group_name + " exists already")
 
     # Reading a dose
     nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
@@ -85,8 +85,8 @@ try:
     ## Storing Results
     results = {}
 
+    print("Reading RSS Groups")
     rssGroups = case.TreatmentDelivery.RadiationSetScenariosGroups
-
     # correct group rss.Name == rss_group_name && rss.ReferencedRaditionSet.DicomPlanLabel == plan_name
     rssGroup = (filter(lambda rss: rss.Name == rss_group_name and rss.ReferencedRaditionSet.DicomPlanLabel == plan_name,
                        rssGroups))[0]
@@ -96,8 +96,10 @@ try:
 
     discrete_doses = rssGroup.DiscreteFractionDoseScenarios + [nominal_dose]
 
+    print("Finished RSS Groups")
+
     # Get statistics based ROIs
-    print "Reading Dose Statistics ROIs"
+    print("Reading Dose Statistics ROIs")
     dose_statistics_rois = [
         {
             'label': 'CTV_45',
@@ -124,11 +126,11 @@ try:
                                                                                                 dose_stat_roi['name'],
                                                                                                 dose_stat_roi[
                                                                                                     'doseType']))
-    print "Finished Dose Statistics ROIs"
+    print("Finished Dose Statistics ROIs")
 
 
     # Get relative volume based ROIs
-    print "Reading Dose Relative Volume ROIs"
+    print("Reading Dose Relative Volume ROIs")
     dose_relative_volume_rois = [
         {
             'label': 'iCTV_45',
@@ -159,15 +161,15 @@ try:
                                                                                dose_relative_volume_roi['name'],
                                                                                dose_relative_volume_roi[
                                                                                    'relativeVolumes']))
-    print "Finished Dose Relative Volume ROIs"
+    print("Finished Dose Relative Volume ROIs")
 
-    print "Writing results..."
+    print("Writing results...")
     output_path = "Z:\\"
     with open('data.json', 'w') as f:
         json.dump(results, f)
-    print "Written results!"
-    print "Done"
+    print("Written results!")
+    print("Done")
 
 except Exception:
-    print "You broke shit."
+    print("You broke shit.")
     raise
