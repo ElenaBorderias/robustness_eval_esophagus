@@ -36,6 +36,7 @@ def get_key(value):
 def get_dose_statistic(dose, roi_name, dose_type):
     return round(dose.GetDoseStatistic(RoiName=roi_name, DoseType=dose_type) * 0.01, 2)
 
+
 def get_dose_at_relative_volume(dose, roi_name, relative_volumes):
     return round(float(
         dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
@@ -51,8 +52,8 @@ def worst_dose(doses, roi_type, dose_calculation):
 
 
 try:
-###############################################################################
-###############################################################################
+    ###############################################################################
+    ###############################################################################
 
     plan = case.TreatmentPlans[plan_name]
     beam_set = plan.BeamSets[0]
@@ -62,20 +63,20 @@ try:
     # Run robustness evaluation range error (RE) and setup error (SE)
     try:
         beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
-                                             UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
-                                             PositionUncertaintySuperior=setup_error,
-                                             PositionUncertaintyInferior=setup_error,
-                                             PositionUncertaintyPosterior=setup_error,
-                                             PositionUncertaintyAnterior=setup_error,
-                                             PositionUncertaintyLeft=setup_error,
-                                             PositionUncertaintyRight=setup_error,
-                                             PositionUncertaintyFormation="AxesAndDiagonalEndPoints",
-                                             PositionUncertaintyList=None,
-                                             DensityUncertainty=range_error,
-                                             NumberOfDensityDiscretizationPoints=nb_density_discretization_points,
-                                             ComputeScenarioDosesAfterGroupCreation=True)
+                                                 UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
+                                                 PositionUncertaintySuperior=setup_error,
+                                                 PositionUncertaintyInferior=setup_error,
+                                                 PositionUncertaintyPosterior=setup_error,
+                                                 PositionUncertaintyAnterior=setup_error,
+                                                 PositionUncertaintyLeft=setup_error,
+                                                 PositionUncertaintyRight=setup_error,
+                                                 PositionUncertaintyFormation="AxesAndDiagonalEndPoints",
+                                                 PositionUncertaintyList=None,
+                                                 DensityUncertainty=range_error,
+                                                 NumberOfDensityDiscretizationPoints=nb_density_discretization_points,
+                                                 ComputeScenarioDosesAfterGroupCreation=True)
     except:
-        print "Scenario Group" + plan_name + " Exists already"
+        print "Scenario Group" + rss_group_name + " Exists already"
 
     # Reading a dose
     nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
@@ -119,8 +120,9 @@ try:
         results[get_key(dose_stat_roi) + '_worst'] = worst_dose(discrete_doses,
                                                                 dose_stat_roi['roi_type'],
                                                                 lambda dose: get_dose_statistic(dose,
-                                                                                                    dose_stat_roi['name'],
-                                                                                                    dose_stat_roi['doseType']))
+                                                                                                dose_stat_roi['name'],
+                                                                                                dose_stat_roi[
+                                                                                                    'doseType']))
 
     # Get relative volume based ROIs
     dose_relative_volume_rois = [
@@ -141,13 +143,18 @@ try:
     ]
 
     for dose_relative_volume_roi in dose_relative_volume_rois:
-        results[get_key(dose_relative_volume_roi) + '_nominal'] = get_dose_at_relative_volume(nominal_dose, dose_relative_volume_roi['name'], dose_relative_volume_roi['relativeVolumes'])
+        results[get_key(dose_relative_volume_roi) + '_nominal'] = get_dose_at_relative_volume(nominal_dose,
+                                                                                              dose_relative_volume_roi[
+                                                                                                  'name'],
+                                                                                              dose_relative_volume_roi[
+                                                                                                  'relativeVolumes'])
         results[get_key(dose_relative_volume_roi) + '_worst'] = worst_dose(discrete_doses,
                                                                            dose_relative_volume_roi['roi_type'],
-                                                                           lambda dose: get_dose_at_relative_volume(dose,
-                                                                                                                        dose_relative_volume_roi['name'],
-                                                                                                                        dose_relative_volume_roi['relativeVolumes']))
-
+                                                                           lambda dose: get_dose_at_relative_volume(
+                                                                               dose,
+                                                                               dose_relative_volume_roi['name'],
+                                                                               dose_relative_volume_roi[
+                                                                                   'relativeVolumes']))
 
     output_path = "Z:\\"
     with open('data.json', 'w') as f:
