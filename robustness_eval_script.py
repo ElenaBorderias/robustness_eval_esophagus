@@ -85,6 +85,8 @@ for dose_stat_roi in dose_statistics_rois:
     results[get_key(dose_stat_roi)] = round(
         nominal_dose.GetDoseStatistic(RoiName=dose_stat_roi['name'], DoseType=dose_stat_roi['doseType']) * 0.01, 2)
 
+
+# Get relative volume based ROIs
 dose_relative_volume_rois = [
     {
         'label': 'iCTV_45',
