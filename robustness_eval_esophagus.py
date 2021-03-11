@@ -119,14 +119,14 @@ dose_statistics_rois = [
 
 for dose_stat_roi in dose_statistics_rois:
     results[get_key(dose_stat_roi)] = []
-    results[get_key(dose_stat_roi)][0] = get_dose_statistic(nominal_dose, dose_stat_roi['name'],
-                                                                      dose_stat_roi['doseType'])
-    results[get_key(dose_stat_roi)][1] = worst_dose(discrete_doses,
+    results[get_key(dose_stat_roi)].append(get_dose_statistic(nominal_dose, dose_stat_roi['name'],
+                                                                      dose_stat_roi['doseType']))
+    results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses,
                                                             dose_stat_roi['roi_type'],
                                                             lambda dose: get_dose_statistic(dose,
                                                                                             dose_stat_roi['name'],
                                                                                             dose_stat_roi[
-                                                                                                'doseType']))
+                                                                                                'doseType'])))
 print("Finished Dose Statistics ROIs")
 
 
@@ -151,18 +151,18 @@ dose_relative_volume_rois = [
 
 for dose_relative_volume_roi in dose_relative_volume_rois:
     results[get_key(dose_relative_volume_roi)] = []
-    results[get_key(dose_relative_volume_roi)][0] = get_dose_at_relative_volume(nominal_dose,
+    results[get_key(dose_relative_volume_roi)].append(get_dose_at_relative_volume(nominal_dose,
                                                                                           dose_relative_volume_roi[
                                                                                               'name'],
                                                                                           dose_relative_volume_roi[
-                                                                                              'relativeVolume'])
-    results[get_key(dose_relative_volume_roi)][1] = worst_dose(discrete_doses,
+                                                                                              'relativeVolume']))
+    results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_doses,
                                                                        dose_relative_volume_roi['roi_type'],
                                                                        lambda dose: get_dose_at_relative_volume(
                                                                            dose,
                                                                            dose_relative_volume_roi['name'],
                                                                            dose_relative_volume_roi[
-                                                                               'relativeVolume']))
+                                                                               'relativeVolume'])))
 print("Finished Dose Relative Volume ROIs")
 
 print("Writing results...")
