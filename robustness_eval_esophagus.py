@@ -172,10 +172,10 @@ output_path = "Z:\\"
 
 
 with open(output_path + 'data.csv', 'wb') as f:
-    writer = csv.writer(f, delimiter = '\t')
-    writer.writerow(('roi', 'nominal', 'worst_case'))
+    writer = csv.writer(f, delimiter = ',')
+    writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
-        writer.writerow((key, results[key][0], results[key][1]))
+        writer.writerow([key, results[key][0], results[key][1]])
 
 print("Written results!")
 print("Done")
