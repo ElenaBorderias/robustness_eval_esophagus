@@ -143,7 +143,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'MT_SpinalCanal',
-        'relativeVolumes': [get_relative_volume_roi_geometries(patient_model, 'SpinalCord', 0.05)],
+        'relativeVolumes': [get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05)],
         'roi_type': "organ_at_risk",
     },
 ]
