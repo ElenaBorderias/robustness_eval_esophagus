@@ -86,7 +86,7 @@ patient_model = case.PatientModel.StructureSets[0]
 results = {}
 
 print("Reading RSS Groups")
-rssGroups = case.TreatmentDelivery.RadiationSetScenariosGroups
+rssGroups = case.TreatmentDelivery.RadiationSetScenarioGroups
 # correct group rss.Name == rss_group_name && rss.ReferencedRaditionSet.DicomPlanLabel == plan_name
 rssGroup = (filter(lambda rss: rss.Name == rss_group_name and rss.ReferencedRaditionSet.DicomPlanLabel == plan_name,
                    rssGroups))[0]
