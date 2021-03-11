@@ -37,10 +37,10 @@ def get_dose_statistic(dose, roi_name, dose_type):
     return round(dose.GetDoseStatistic(RoiName=roi_name, DoseType=dose_type) * 0.01, 2)
 
 
-def get_dose_at_relative_volume(dose, roi_name, relative_volumes):
+def get_dose_at_relative_volume(dose, roi_name, relative_volume):
     return round(float(
         dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
-                                      RelativeVolumes=relative_volumes)) * 0.01, 2)
+                                      RelativeVolumes=[relative_volume])[0]) * 0.01, 2)
 
 
 def worst_dose(doses, roi_type, dose_calculation):
@@ -136,14 +136,14 @@ dose_relative_volume_rois = [
         'label': 'iCTV_45',
         'metric': 'V95',
         'name': 'MT_iCTVt_4500',
-        'relativeVolumes': [0.95],
+        'relativeVolume': 0.95,
         'roi_type': "target",
     },
     {
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'MT_SpinalCanal',
-        'relativeVolumes': [get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05)],
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
     },
 ]
@@ -153,14 +153,14 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
                                                                                           dose_relative_volume_roi[
                                                                                               'name'],
                                                                                           dose_relative_volume_roi[
-                                                                                              'relativeVolumes'])
+                                                                                              'relativeVolume'])
     results[get_key(dose_relative_volume_roi) + '_worst'] = worst_dose(discrete_doses,
                                                                        dose_relative_volume_roi['roi_type'],
                                                                        lambda dose: get_dose_at_relative_volume(
                                                                            dose,
                                                                            dose_relative_volume_roi['name'],
                                                                            dose_relative_volume_roi[
-                                                                               'relativeVolumes']))
+                                                                               'relativeVolume']))
 print("Finished Dose Relative Volume ROIs")
 
 print("Writing results...")
