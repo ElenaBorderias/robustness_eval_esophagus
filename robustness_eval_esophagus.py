@@ -243,17 +243,6 @@ dose_relative_volume_rois = [
         'SE_RE_rob_eval': 'True',
         'Recomp_all_phases' : 'False',
         'Accumulate_all_phases' : 'False',
-    },
-    {
-        'label': 'Stomach-ictv',
-        'metric': 'D0_5',
-        'name': 'MT_Stomach-ictv,
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.5),
-        'roi_type': "organ_at_risk",
-        'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
     }
 ]
 
