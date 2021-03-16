@@ -230,8 +230,8 @@ dose_relative_volume_rois = [
     {
         'label': 'Body',
         'metric': 'D0_05',
-        'name': 'MT_Body',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 0.05),
+        'name': 'BODY',
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': 'True',
@@ -241,8 +241,8 @@ dose_relative_volume_rois = [
     {
         'label': 'Body',
         'metric': 'D1',
-        'name': 'MT_Body',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 1.0),
+        'name': 'BODY',
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 1.0),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': 'True',
