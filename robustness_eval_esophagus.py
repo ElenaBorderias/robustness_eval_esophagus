@@ -281,7 +281,7 @@ relative_volume_at_dose_level_rois = [
         'label': 'iCTV_45',
         'metric': 'V95',
         'name': 'MT_iCTVt_4500',
-        'dose_level': 0.95*Dpresciption,
+        'dose_level': 0.95*Dprescription,
         'roi_type': "target",
         'priority': 1,
         'SE_RE_rob_eval': 'True',
