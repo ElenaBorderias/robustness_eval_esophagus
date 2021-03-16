@@ -552,7 +552,7 @@ statistics_respiratory_motion = map(get_all_phase_statistics, evaluated_doses_re
 with open(output_path + 'clinical_goals_repiratory_motion_evaluation.txt', 'w+') as f:
     fieldnames = ['phase_name'] + statistics_respiratory_motion[0].keys()
 
-    writer = csv.DictWriter(f, fieldnames=fieldnames, separator = '\t')
+    writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter = '\t')
     writer.writeheader()
     
     for idx,stat in enumerate(statistics_respiratory_motion):
