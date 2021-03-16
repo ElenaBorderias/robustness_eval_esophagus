@@ -520,13 +520,12 @@ for phase_name in phases:
 
 print(evaluated_doses_respiratory_motion)
 
-statistics_respiratory_motion = map(get_all_phase_statistics,evaluated_doses_repiratory_motion)
 
 def get_all_phase_statistics(dose_phase):
     phase_statistics = {}
     for dose_stat_roi in filter(is_evaluated_for_repiratory_motion, dose_statistics_rois):
         try:
-            phase_statistics[get_key(dose_stat_roi))] = get_dose_statistic(dose_phase, dose_stat_roi['name'],
+            phase_statistics[get_key(dose_stat_roi)] = get_dose_statistic(dose_phase, dose_stat_roi['name'],
                                                                           dose_stat_roi['doseType'])*n_fractions    
         except: 
             print(dose_stat_roi['name'] + " does not exist\n")
@@ -547,6 +546,7 @@ def get_all_phase_statistics(dose_phase):
             
     return phase_statistics
 
+statistics_respiratory_motion = map(get_all_phase_statistics, evaluated_doses_respiratory_motion)
 
 with open(output_path + 'clinical_goals_repiratory_motion_evaluation.txt', 'w+') as f:
     fieldnames = statistics_respiratory_motion[0].keys()
