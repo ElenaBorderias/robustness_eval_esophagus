@@ -480,7 +480,7 @@ beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False,
                                      ComputeBeamDoses=True)
 #find perturbed doses
 evaluated_doses_respiratory_motion = []
-dicom_plan_label = beam_set.Name
+dicom_plan_label = beam_set.DicomPlanLabel
 
 for i,phase_name in enumerate(phases): 
     if phase_name == case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i].OnExamination.Name:
@@ -490,5 +490,5 @@ for i,phase_name in enumerate(phases):
             if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
                 evaluated_doses_respiratory_motion.append(eval_dose)
 
-
+print(evaluated_doses_respiratory_motion)
 
