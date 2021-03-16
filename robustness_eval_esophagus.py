@@ -274,10 +274,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_iCTVt_4500',
         'dose_level': 0.95*Dpresciption,
         'roi_type': "target",
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Lung',
@@ -285,10 +285,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Lungs',
         'dose_level': 20,
         'roi_type': "organ_at_risk",
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Lung',
@@ -296,10 +296,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Lungs',
         'dose_level': 5,
         'roi_type': "organ_at_risk",
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Liver',
@@ -307,10 +307,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Liver',
         'dose_level': 30,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Heart',
@@ -318,10 +318,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Liver',
         'dose_level': 40,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Heart',
@@ -329,10 +329,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Liver',
         'dose_level': 25,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Kidneys',
@@ -340,10 +340,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Kidneys',
         'dose_level': 20,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Kidneys',
@@ -351,10 +351,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Kidneys',
         'dose_level': 6,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Bowel_cavity',
@@ -362,10 +362,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Bowel_cavity',
         'dose_level': 30,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Bowel_cavity',
@@ -373,10 +373,10 @@ relative_volume_at_dose_level_rois = [
         'name': 'MT_Bowel_cavity',
         'dose_level': 45,
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     }
 ]
 
