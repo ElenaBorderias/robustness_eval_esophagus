@@ -381,19 +381,22 @@ relative_volume_at_dose_level_rois = [
 ]
 
 for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
-    results[get_key(relative_volume_at_dose_level_roi)] = []
-    results[get_key(relative_volume_at_dose_level_roi)].append(get_relative_volume_at_dose_value(nominal_dose,
+    try: 
+        results[get_key(relative_volume_at_dose_level_roi)] = []
+        results[get_key(relative_volume_at_dose_level_roi)].append(get_relative_volume_at_dose_value(nominal_dose,
                                                                                           relative_volume_at_dose_level_roi[
                                                                                               'name'],
                                                                                           relative_volume_at_dose_level_roi[
                                                                                               'dose_level']))
-    results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(discrete_doses,
+        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(discrete_doses,
                                                                        dose_relative_volume_roi['roi_type'],
                                                                        lambda dose: get_relative_volume_at_dose_value(
                                                                            dose,
                                                                            relative_volume_at_dose_level_roi['name'],
                                                                            relative_volume_at_dose_level_roi[
                                                                                'dose_level'])))
+    except:
+        print("This roi does not exists")
     
 print("Finished Relative Volume at Dose Value ROI statistics")
 
