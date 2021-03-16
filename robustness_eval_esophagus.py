@@ -495,12 +495,13 @@ for phase_name in phases:
             doe = find_doe
             for eval_dose in doe.DoseEvaluations:
                 if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
+                    my_eval_dose = eval_dose
                     print("I found the evaluation you were looking for in " + phase_name)
-        try: 
-            evaluated_doses_respiratory_motion.append(eval_dose)
+    try: 
+        evaluated_doses_respiratory_motion.append(my_eval_dose)
         
-        except:
-            print("No evaluation was found for " + phase_name)
+    except:
+        print("No evaluation was found for " + phase_name)
 
 
 print(evaluated_doses_respiratory_motion)
