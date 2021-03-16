@@ -420,7 +420,10 @@ with open(output_path + 'data.csv', 'w+') as f:
     writer = csv.writer(f, delimiter = ',')
     writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
-        writer.writerow([key, results[key][0], results[key][1]])
+        try: 
+            writer.writerow([key, results[key][0], results[key][1]])
+        except:
+            print("No se imprimir porque elena  is dumb "+ key)
 
 print("Written results!")
 print("Done")
