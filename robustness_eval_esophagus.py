@@ -450,7 +450,7 @@ output_path = "Z:\\output_rob_eval_esophagus\\"
 
 with open(output_path + 'data.txt', 'w+') as f:
     #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
-    writer = csv.writer(f, delimiter = ',')
+    writer = csv.writer(f, delimiter = '\t')
     writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
         try: 
@@ -473,18 +473,22 @@ for it_phase in case.ExaminationGroups[phases_group_name].Items:
     phases.append(it_phase.Examination.Name)
     
 #Recompute nominal dose in all resporatory phases 
+"""
 beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False, 
                                      AllowGridExpansion=True, 
                                      ExaminationNames= phases, 
                                      FractionNumbers=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                                      ComputeBeamDoses=True)
+
+"""
 #find perturbed doses
 evaluated_doses_respiratory_motion = []
 dicom_plan_label = beam_set.DicomPlanLabel
 
+
 for i,phase_name in enumerate(phases): 
     if phase_name == case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i].OnExamination.Name:
-        print("I found the examination")
+        print("I found the examination " + phase_name)
         doe = case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i]
         for eval_dose in doe.DoseEvaluations:
             if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
