@@ -55,6 +55,9 @@ def worst_dose(calculated_doses, roi_type):
     if roi_type == "organ_at_risk":
         return round(max(calculated_doses),2)
 
+def is_evaluated_for_repiratory_motion(clinical_goal_config):
+    return clinical_goal_config['Recomp_all_phases']
+
 
 ###############################################################################
 ###############################################################################
@@ -117,9 +120,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': 'target',
         'priority': 1,
-        'SE_RE_rob_eval': 'False',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': False,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'iCTV_45',
@@ -128,9 +131,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': 'target',
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
         
     },
     {
@@ -140,9 +143,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': 'target',
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
         
     },
     {
@@ -152,9 +155,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_L',
@@ -163,9 +166,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_R',
@@ -174,9 +177,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Spleen',
@@ -185,9 +188,9 @@ dose_statistics_rois = [
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     }
 ]
 
@@ -224,9 +227,9 @@ dose_relative_volume_rois = [
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : True,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Spinal_Cord_PRV',
@@ -235,9 +238,9 @@ dose_relative_volume_rois = [
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Body',
@@ -246,9 +249,9 @@ dose_relative_volume_rois = [
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : True,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Body',
@@ -257,9 +260,9 @@ dose_relative_volume_rois = [
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 1.0),
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : True,
+        'Accumulate_all_phases' : False,
     }
 ]
 
@@ -295,9 +298,20 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 0.95*Dprescription,
         'roi_type': "target",
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
+    },
+    {
+        'label': 'CTV_45',
+        'metric': 'V95',
+        'name': 'MT_CTVt_4500',
+        'dose_level': 0.95*Dprescription,
+        'roi_type': "target",
+        'priority': 1,
+        'SE_RE_rob_eval': False,
+        'Recomp_all_phases' : True,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Lung',
@@ -306,9 +320,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 20,
         'roi_type': "organ_at_risk",
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Lung',
@@ -317,9 +331,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 5,
         'roi_type': "organ_at_risk",
         'priority': 1,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Liver',
@@ -328,9 +342,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 30,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Heart',
@@ -339,9 +353,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 40,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Heart',
@@ -350,9 +364,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 25,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_L',
@@ -361,9 +375,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 20,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_L',
@@ -372,9 +386,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 6,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_R',
@@ -383,9 +397,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 20,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Kidney_R',
@@ -394,9 +408,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 6,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Bowel_cavity',
@@ -405,9 +419,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 30,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     },
     {
         'label': 'Bowel_cavity',
@@ -416,9 +430,9 @@ relative_volume_at_dose_level_rois = [
         'dose_level': 45,
         'roi_type': "organ_at_risk",
         'priority': 2,
-        'SE_RE_rob_eval': 'True',
-        'Recomp_all_phases' : 'False',
-        'Accumulate_all_phases' : 'False',
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
     }
 ]
 
@@ -506,18 +520,45 @@ for phase_name in phases:
 
 print(evaluated_doses_respiratory_motion)
 
-"""
+statistics_respiratory_motion = map(get_all_phase_statistics,evaluated_doses_repiratory_motion)
+
+def get_all_phase_statistics(dose_phase):
+    phase_statistics = {}
+    for dose_stat_roi in filter(is_evaluated_for_repiratory_motion, dose_statistics_rois):
+        try:
+            phase_statistics[get_key(dose_stat_roi))] = get_dose_statistic(dose_phase, dose_stat_roi['name'],
+                                                                          dose_stat_roi['doseType'])*n_fractions    
+        except: 
+            print(dose_stat_roi['name'] + " does not exist\n")
+            
+    for dose_relative_volume_roi in filter(is_evaluated_for_repiratory_motion, dose_relative_volume_rois):
+        try:
+            phase_statistics[get_key(dose_relative_volume_roi)] = get_dose_at_relative_volume(dose_phase, dose_relative_volume_roi['name'],
+                                                                           dose_relative_volume_roi['relativeVolume'])*n_fractions    
+        except: 
+            print(dose_relative_volume_roi['name'] + " does not exist\n")
+            
+    for relative_volume_at_dose_level_roi in filter(is_evaluated_for_repiratory_motion, relative_volume_at_dose_level_rois):
+        try:
+            phase_statistics[get_key(relative_volume_at_dose_level_roi)] = get_relative_volume_at_dose_value(dose_phase, relative_volume_at_dose_level_roi['name'],
+                                                                          relative_volume_at_dose_level_roi['dose_level'])*n_fractions    
+        except: 
+            print(relative_volume_at_dose_level_roi['name'] + " does not exist\n")
+            
+    return phase_statistics
+
+
 with open(output_path + 'clinical_goals_repiratory_motion_evaluation.txt', 'w+') as f:
-    #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
-    writer = csv.writer(f, delimiter = '\t')
-    writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
-    for key in results:
+    fieldnames = statistics_respiratory_motion[0].keys()
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+
+    for stat in statistics_respiratory_motion:
         try: 
-            writer.writerow([key, results[key][0], results[key][1]])
+            writer.writerow(stat)
         except:
             print("I don't know how to print "+ key + " val "+ results[key])
 
 print("Written results!")
 print("Done")
-"""
+
 
