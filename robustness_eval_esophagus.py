@@ -416,7 +416,7 @@ output_path = "Z:\\output_rob_eval_esophagus\\"
 
 
 with open(output_path + 'data.csv', 'w+') as f:
-    writer = csv.writer(f, delimiter = ',')
+    writer = csv.writer(f, dialect = 'excel', quotechar = '"', delimiter = ',')
     writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
         try: 
