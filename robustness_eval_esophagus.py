@@ -13,6 +13,7 @@ ct_ref_name = "Average CT"
 phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
+Dprescription = 70
 
 # other (thanks :( as in white walkers??????) parameters
 isotropic_pos_uncertainty = False
@@ -42,6 +43,12 @@ def get_dose_at_relative_volume(dose, roi_name, relative_volume):
         dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
                                       RelativeVolumes=[relative_volume])[0]) * 0.01, 2)
 
+def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
+    reeturn round(float(
+        dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
+                                      DoseValues=[dose_value])[0]), 2)
+        
+
 
 def worst_dose(doses, roi_type, dose_calculation):
     calculated_doses = map(dose_calculation, doses)
@@ -51,7 +58,9 @@ def worst_dose(doses, roi_type, dose_calculation):
         return max(calculated_doses)
 
 
-
+###############################################################################
+###############################################################################
+# Run robustness evaluation range error (RE) and setup error (SE)
 ###############################################################################
 ###############################################################################
 
@@ -60,7 +69,6 @@ beam_set = plan.BeamSets[0]
 
 rss_group_name = "ROB_EVAL_SE_RE"
 
-# Run robustness evaluation range error (RE) and setup error (SE)
 try:
     beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
                                              UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
@@ -98,7 +106,10 @@ discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios) + [nominal_dose]
 
 print("Finished RSS Groups")
 
-# Get statistics based ROIs
+##########################################################################
+# Get statistics based ROIs - AVERAGE DOSES 
+###########################################################################
+
 print("Reading Dose Statistics ROIs")
 dose_statistics_rois = [
     {
@@ -107,6 +118,10 @@ dose_statistics_rois = [
         'name': 'MT_CTVt_4500',
         'doseType': 'Average',
         'roi_type': 'target',
+        'priority': 1
+        'SE_RE_rob_eval': 'False'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
     },
     {
         'label': 'iCTV_45',
@@ -114,6 +129,56 @@ dose_statistics_rois = [
         'name': 'MT_iCTVt_4500',
         'doseType': 'Average',
         'roi_type': 'target',
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+        
+    },
+    {
+        'label': 'Lungs',
+        'metric': 'Dmean',
+        'name': 'MT_Lungs',
+        'doseType': 'Average',
+        'roi_type': 'target',
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+        
+    },
+    {
+        'label': 'Heart',
+        'metric': 'Dmean',
+        'name': 'MT_Heart',
+        'doseType': 'Average',
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Kidneys',
+        'metric': 'Dmean',
+        'name': 'MT_Kidneys',
+        'doseType': 'Average',
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Spleen',
+        'metric': 'Dmean',
+        'name': 'MT_Spleen',
+        'doseType': 'Average',
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
     }
 ]
 
@@ -129,24 +194,67 @@ for dose_stat_roi in dose_statistics_rois:
                                                                                                 'doseType'])))
 print("Finished Dose Statistics ROIs")
 
+##########################################################################
+# Get dose at relative volume based ROI statistics
+###########################################################################
 
-# Get relative volume based ROIs
-print("Reading Dose Relative Volume ROIs")
+print("Reading Dose at Relative Volume ROIs")
 dose_relative_volume_rois = [
-    {
-        'label': 'iCTV_45',
-        'metric': 'V95',
-        'name': 'MT_iCTVt_4500',
-        'relativeVolume': 0.95,
-        'roi_type': "target",
-    },
     {
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'MT_SpinalCanal',
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
     },
+    {
+        'label': 'Spinal_Cord_PRV',
+        'metric': 'D0_05',
+        'name': 'MT_SpinalCan_03',
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
+        'roi_type': "organ_at_risk",
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Body',
+        'metric': 'D0_05',
+        'name': 'MT_Body',
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 0.05),
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Body',
+        'metric': 'D1',
+        'name': 'MT_Body',
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 1.0),
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Stomach-ictv',
+        'metric': 'D0_5',
+        'name': 'MT_Stomach-ictv,
+        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.5),
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    }
 ]
 
 for dose_relative_volume_roi in dose_relative_volume_rois:
@@ -163,12 +271,147 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
                                                                            dose_relative_volume_roi['name'],
                                                                            dose_relative_volume_roi[
                                                                                'relativeVolume'])))
-print("Finished Dose Relative Volume ROIs")
+print("Finished Dose at Relative Volume ROI statistics")
+
+##########################################################################
+# Get relative volume at dose level based ROI statistics
+###########################################################################
+
+print("Reading Relative Volume at Dose Value ROI statistics")
+relative_volume_at_dose_level_rois = [
+    {
+        'label': 'iCTV_45',
+        'metric': 'V95',
+        'name': 'MT_iCTVt_4500',
+        'dose_level': 0.95*Dpresciption,
+        'roi_type': "target",
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Lung',
+        'metric': 'V20',
+        'name': 'MT_Lungs',
+        'dose_level': 20,
+        'roi_type': "organ_at_risk",
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Lung',
+        'metric': 'V5',
+        'name': 'MT_Lungs',
+        'dose_level': 5,
+        'roi_type': "organ_at_risk",
+        'priority': 1
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Liver',
+        'metric': 'V30',
+        'name': 'MT_Liver',
+        'dose_level': 30,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Heart',
+        'metric': 'V40',
+        'name': 'MT_Liver',
+        'dose_level': 40,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Heart',
+        'metric': 'V25',
+        'name': 'MT_Liver',
+        'dose_level': 25,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Kidneys',
+        'metric': 'V20',
+        'name': 'MT_Kidneys',
+        'dose_level': 20,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Kidneys',
+        'metric': 'V6',
+        'name': 'MT_Kidneys',
+        'dose_level': 6,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Bowel_cavity',
+        'metric': 'V30',
+        'name': 'MT_Bowel_cavity',
+        'dose_level': 30,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    },
+    {
+        'label': 'Bowel_cavity',
+        'metric': 'V45',
+        'name': 'MT_Bowel_cavity',
+        'dose_level': 45,
+        'roi_type': "organ_at_risk",
+        'priority': 2
+        'SE_RE_rob_eval': 'True'
+        'Recomp_all_phases' : 'False'
+        'Accumulate_all_phases' : 'False'
+    }
+]
+
+for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
+    results[get_key(relative_volume_at_dose_level_roi)] = []
+    results[get_key(relative_volume_at_dose_level_roi)].append(get_relative_volume_at_dose_value(nominal_dose,
+                                                                                          relative_volume_at_dose_level_roi[
+                                                                                              'name'],
+                                                                                          relative_volume_at_dose_level_roi[
+                                                                                              'dose_level']))
+    results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(discrete_doses,
+                                                                       dose_relative_volume_roi['roi_type'],
+                                                                       lambda dose: get_relative_volume_at_dose_value(
+                                                                           dose,
+                                                                           relative_volume_at_dose_level_roi['name'],
+                                                                           relative_volume_at_dose_level_roi[
+                                                                               'dose_level'])))
+    
+print("Finished Relative Volume at Dose Value ROI statistics")
+
 
 print("Writing results...")
+
 output_path = "Z:\\"
-
-
 
 
 with open(output_path + 'data.csv', 'wb') as f:
@@ -179,3 +422,34 @@ with open(output_path + 'data.csv', 'wb') as f:
 
 print("Written results!")
 print("Done")
+
+###############################################################################
+###############################################################################
+# Run robustness evaluation agains respiratory motion
+###############################################################################
+###############################################################################
+
+#read phases
+phases = []
+for it_phase in case.ExaminationGroups[phases_group_name].Items:
+    phases.append(it_phase.Examination.Name)
+    
+#Recompute nominal dose in all resporatory phases 
+beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False, 
+                                     AllowGridExpansion=True, 
+                                     ExaminationNames= phases, 
+                                     FractionNumbers=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+                                     ComputeBeamDoses=True)
+#find perturbed doses
+evaluated_doses_respiratory_motion = []
+
+for i,phase_name in enumerate(phases): 
+    if phase_name == case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i].OnExamination.Name:
+        print("I found the examination")
+        doe = case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i]
+        for eval_dose in doe.DoseEvaluations:
+            if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
+                evaluated_doses_respiratory_motion.append(eval_dose)
+
+
+
