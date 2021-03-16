@@ -44,7 +44,7 @@ def get_dose_at_relative_volume(dose, roi_name, relative_volume):
                                       RelativeVolumes=[relative_volume])[0]) * 0.01, 2)
 
 def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
-    reeturn round(float(
+    return round(float(
         dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
                                       DoseValues=[dose_value])[0]), 2)
         
