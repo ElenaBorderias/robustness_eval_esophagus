@@ -8,7 +8,7 @@ case = get_current("Case")
 
 # clean up into objects
 
-plan_name = "Average_7mm_DO_s"
+plan_name = "elena_test"
 ct_ref_name = "Average CT"
 phases_group_name = "Phases"
 setup_error = 0.7  # mm
