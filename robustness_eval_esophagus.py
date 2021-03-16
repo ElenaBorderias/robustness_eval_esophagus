@@ -51,9 +51,9 @@ def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
 
 def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
-        return min(calculated_doses)
+        return round(min(calculated_doses),2)
     if roi_type == "organ_at_risk":
-        return max(calculated_doses)
+        return round(max(calculated_doses),2)
 
 
 ###############################################################################
@@ -415,8 +415,8 @@ print("Writing results...")
 output_path = "Z:\\output_rob_eval_esophagus\\"
 
 
-with open(output_path + 'data.csv', 'w+') as f:
-    writer = csv.writer(f, dialect = 'excel', quotechar = '"', delimiter = ',')
+with open(output_path + 'data.xls', 'w+') as f:
+    writer = csv.writer(f, dialect = 'excel', delimiter = ',')
     writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
         try: 
