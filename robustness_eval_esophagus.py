@@ -193,7 +193,7 @@ for dose_stat_roi in dose_statistics_rois:
 
         results[get_key(dose_stat_roi)] = []
         results[get_key(dose_stat_roi)].append(nominal_dose_statistic)
-        results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses_statistics + nominal_dose_statistic,
+        results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses_statistics + [nominal_dose_statistic],
                                                             dose_stat_roi['roi_type']))
     
     except: 
@@ -265,7 +265,7 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
         
         results[get_key(dose_relative_volume_roi)] = []
         results[get_key(dose_relative_volume_roi)].append(nominal_dose_at_relative_volume_stat)
-        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat + nominal_dose_at_relative_volume_stat,
+        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat + [nominal_dose_at_relative_volume_stat],
                                                                        dose_relative_volume_roi['roi_type']))
     except:
         print(dose_relative_volume_roi['name'] + " does not exist\n")
@@ -403,7 +403,7 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
                                                                                                     relative_volume_at_dose_level_roi['dose_level'])*n_fractions,discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
         results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
-        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+nominal_relative_volume_at_dose_stat,
+        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
                                                                        relative_volume_at_dose_level_roi['roi_type']))
     except:
         print(relative_volume_at_dose_level_roi['name']+ " does not exist \n")
@@ -423,7 +423,7 @@ with open(output_path + 'data.csv', 'w+') as f:
         try: 
             writer.writerow([key, results[key][0], results[key][1]])
         except:
-            print("No se imprimir porque elena  is dumb "+ key)
+            print("No se imprimir "+ key + " val "+ results[key])
 
 print("Written results!")
 print("Done")
