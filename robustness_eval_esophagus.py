@@ -14,6 +14,7 @@ phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
 Dprescription = 70
+n_fractions = 35
 
 # other (thanks :( as in white walkers??????) parameters
 isotropic_pos_uncertainty = False
@@ -49,9 +50,7 @@ def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
                                       DoseValues=[dose_value])[0]), 2)
         
 
-
-def worst_dose(doses, roi_type, dose_calculation):
-    calculated_doses = map(dose_calculation, doses)
+def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
         return min(calculated_doses)
     if roi_type == "organ_at_risk":
@@ -102,7 +101,7 @@ rssGroup = (filter(lambda rss: rss.Name == rss_group_name and rss.ReferencedRadi
 if rssGroup is not None:
     print("Found corresponding RSS group " + rssGroup.Name)
 
-discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios) + [nominal_dose]
+discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios) 
 
 print("Finished RSS Groups")
 
@@ -185,17 +184,19 @@ dose_statistics_rois = [
 for dose_stat_roi in dose_statistics_rois:
     try:
         
+        nominal_dose_statistic = get_dose_statistic(nominal_dose, dose_stat_roi['name'],
+                                                                      dose_stat_roi['doseType'])
+        
+        discrete_doses_statistics = map(lambda dose: get_dose_statistic(dose,dose_stat_roi['name'],
+                                                                                dose_stat_roi['doseType'])*n_fractions, discrete_doses)
+        
+
         results[get_key(dose_stat_roi)] = []
-        results[get_key(dose_stat_roi)].append(get_dose_statistic(nominal_dose, dose_stat_roi['name'],
-                                                                      dose_stat_roi['doseType']))
-        results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses,
-                                                            dose_stat_roi['roi_type'],
-                                                            lambda dose: get_dose_statistic(dose,
-                                                                                            dose_stat_roi['name'],
-                                                                                            dose_stat_roi[
-                                                                                                'doseType'])))
+        results[get_key(dose_stat_roi)].append(nominal_dose_statistic)
+        results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses_statistics + nominal_dose_statistic,
+                                                            dose_stat_roi['roi_type'])
+    
     except: 
-        del results[get_key(dose_stat_roi)]
         print(dose_stat_roi['name'] + " does not exist\n")
         
 print("Finished Dose Statistics ROIs")
@@ -254,22 +255,21 @@ dose_relative_volume_rois = [
 
 for dose_relative_volume_roi in dose_relative_volume_rois:
     try: 
+        
+        nominal_dose_at_relative_volume_stat = get_dose_at_relative_volume(nominal_dose,
+                                                                       dose_relative_volume_roi['name'],
+                                                                       dose_relative_volume_roi['relativeVolume'])
+        
+        discrete_dose_at_relative_volume_stat = map(lambda dose: get_dose_at_relative_volume(dose,dose_relative_volume_roi['name'],
+                                                                           dose_relative_volume_roi['relativeVolume']))*n_fractions, discrete_doses)
+        
         results[get_key(dose_relative_volume_roi)] = []
-        results[get_key(dose_relative_volume_roi)].append(get_dose_at_relative_volume(nominal_dose,
-                                                                                          dose_relative_volume_roi[
-                                                                                              'name'],
-                                                                                          dose_relative_volume_roi[
-                                                                                              'relativeVolume']))
-        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_doses,
-                                                                       dose_relative_volume_roi['roi_type'],
-                                                                       lambda dose: get_dose_at_relative_volume(
-                                                                           dose,
-                                                                           dose_relative_volume_roi['name'],
-                                                                           dose_relative_volume_roi[
-                                                                               'relativeVolume'])))
+        results[get_key(dose_relative_volume_roi)].append(nominal_dose_at_relative_volume_stat)
+        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat + nominal_dose_at_relative_volume_stat,
+                                                                       dose_relative_volume_roi['roi_type'])
     except:
         del results[get_key(dose_relative_volume_roi)]
-        print(dose_stat_roi['name'] + " does not exist\n")
+        print(dose_relative_volume_roi['name'] + " does not exist\n")
         
 print("Finished Dose at Relative Volume ROI statistics")
 
@@ -326,7 +326,7 @@ relative_volume_at_dose_level_rois = [
     {
         'label': 'Heart',
         'metric': 'V40',
-        'name': 'MT_Liver',
+        'name': 'MT_Heart',
         'dose_level': 40,
         'roi_type': "organ_at_risk",
         'priority': 2,
@@ -337,7 +337,7 @@ relative_volume_at_dose_level_rois = [
     {
         'label': 'Heart',
         'metric': 'V25',
-        'name': 'MT_Liver',
+        'name': 'MT_Heart',
         'dose_level': 25,
         'roi_type': "organ_at_risk",
         'priority': 2,
@@ -393,22 +393,22 @@ relative_volume_at_dose_level_rois = [
 
 for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
     try: 
-        results[get_key(relative_volume_at_dose_level_roi)] = []
-        results[get_key(relative_volume_at_dose_level_roi)].append(get_relative_volume_at_dose_value(nominal_dose,
+        
+        nominal_relative_volume_at_dose_stat = get_relative_volume_at_dose_value(nominal_dose,
                                                                                           relative_volume_at_dose_level_roi[
                                                                                               'name'],
                                                                                           relative_volume_at_dose_level_roi[
-                                                                                              'dose_level']))
-        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(discrete_doses,
-                                                                       relative_volume_at_dose_level_roi['roi_type'],
-                                                                       lambda dose: get_relative_volume_at_dose_value(
-                                                                           dose,
-                                                                           relative_volume_at_dose_level_roi['name'],
-                                                                           relative_volume_at_dose_level_roi[
-                                                                               'dose_level'])))
+                                                                                              'dose_level'])
+        
+        descrete_relative_volume_at_dose_stats = map(lambda dose: get_relative_volume_at_dose_value(dose,relative_volume_at_dose_level_roi['name'],
+                                                                                                    relative_volume_at_dose_level_roi['dose_level'])*n_fractions,discrete_doses)
+        results[get_key(relative_volume_at_dose_level_roi)] = []
+        results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
+        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+nominal_relative_volume_at_dose_stat,
+                                                                       relative_volume_at_dose_level_roi['roi_type'])
     except:
         del results[get_key(relative_volume_at_dose_level_roi)]
-        print(dose_stat_roi['name'] + " does not exist \n")
+        print(relative_volume_at_dose_level_roi['name']+ " does not exist \n")
     
 print("Finished Relative Volume at Dose Value ROI statistics")
 
