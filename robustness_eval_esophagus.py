@@ -195,7 +195,7 @@ for dose_stat_roi in dose_statistics_rois:
                                                                                             dose_stat_roi[
                                                                                                 'doseType'])))
     except: 
-        print("This"+ dose_stat_roi['name']) + "roi does not exists\n")
+        print("This"+ dose_stat_roi['name'] + "roi does not exist\n")
         
 print("Finished Dose Statistics ROIs")
 
@@ -267,7 +267,7 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
                                                                            dose_relative_volume_roi[
                                                                                'relativeVolume'])))
     except:
-        print("This"+ dose_stat_roi['name']) + "roi does not exists\n")
+        print("This"+ dose_stat_roi['name'] + "roi does not exist\n")
         
 print("Finished Dose at Relative Volume ROI statistics")
 
@@ -405,7 +405,7 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
                                                                            relative_volume_at_dose_level_roi[
                                                                                'dose_level'])))
     except:
-        print("This"+ dose_stat_roi['name']) + "roi does not exists\n")
+        print("This"+ dose_stat_roi['name'] + "roi does not exist \n")
     
 print("Finished Relative Volume at Dose Value ROI statistics")
 
