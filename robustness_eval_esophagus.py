@@ -448,7 +448,7 @@ print("Writing results...")
 output_path = "Z:\\output_rob_eval_esophagus\\"
 
 
-with open(output_path + 'data.txt', 'w+') as f:
+with open(output_path + 'clinical_goals_SE_RE_evaluation.txt', 'w+') as f:
     #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
     writer = csv.writer(f, delimiter = '\t')
     writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
@@ -491,12 +491,32 @@ dicom_plan_label = beam_set.DicomPlanLabel
 for i,phase_name in enumerate(phases): 
     for find_doe in case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations:
         if phase_name == case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i].OnExamination.Name:
-            #print("I found the examination " + phase_name + " at DoseOnExaminations[" + str(i) + "]")
+            print("I found the examination " + phase_name + " at DoseOnExaminations[" + str(i) + "]")
             doe = case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations[i]
-    for eval_dose in doe.DoseEvaluations:
-        if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
-            print("I found the evaluation you were looking for in " + phase_name)
+            for eval_dose in doe.DoseEvaluations:
+                if eval_dose.ForBeamSet.DicomPlanLabel == dicom_plan_label and eval_dose.PerturbedDoseProperties == None:
+                    print("I found the evaluation you were looking for in " + phase_name)
+        try: 
             evaluated_doses_respiratory_motion.append(eval_dose)
+        
+        except:
+            print("No evaluation was found for " + phase_name)
+
 
 print(evaluated_doses_respiratory_motion)
+
+"""
+with open(output_path + 'clinical_goals_repiratory_motion_evaluation.txt', 'w+') as f:
+    #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
+    writer = csv.writer(f, delimiter = '\t')
+    writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
+    for key in results:
+        try: 
+            writer.writerow([key, results[key][0], results[key][1]])
+        except:
+            print("I don't know how to print "+ key + " val "+ results[key])
+
+print("Written results!")
+print("Done")
+"""
 
