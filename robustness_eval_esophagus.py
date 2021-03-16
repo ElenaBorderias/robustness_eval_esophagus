@@ -118,10 +118,10 @@ dose_statistics_rois = [
         'name': 'MT_CTVt_4500',
         'doseType': 'Average',
         'roi_type': 'target',
-        'priority': 1
-        'SE_RE_rob_eval': 'False'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'False',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'iCTV_45',
@@ -129,10 +129,10 @@ dose_statistics_rois = [
         'name': 'MT_iCTVt_4500',
         'doseType': 'Average',
         'roi_type': 'target',
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
         
     },
     {
@@ -141,10 +141,10 @@ dose_statistics_rois = [
         'name': 'MT_Lungs',
         'doseType': 'Average',
         'roi_type': 'target',
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
         
     },
     {
@@ -153,10 +153,10 @@ dose_statistics_rois = [
         'name': 'MT_Heart',
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Kidneys',
@@ -164,10 +164,10 @@ dose_statistics_rois = [
         'name': 'MT_Kidneys',
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Spleen',
@@ -175,10 +175,10 @@ dose_statistics_rois = [
         'name': 'MT_Spleen',
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     }
 ]
 
@@ -206,10 +206,10 @@ dose_relative_volume_rois = [
         'name': 'MT_SpinalCanal',
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Spinal_Cord_PRV',
@@ -217,10 +217,10 @@ dose_relative_volume_rois = [
         'name': 'MT_SpinalCan_03',
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
-        'priority': 1
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 1,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Body',
@@ -228,10 +228,10 @@ dose_relative_volume_rois = [
         'name': 'MT_Body',
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 0.05),
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Body',
@@ -239,10 +239,10 @@ dose_relative_volume_rois = [
         'name': 'MT_Body',
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_Body', 1.0),
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     },
     {
         'label': 'Stomach-ictv',
@@ -250,10 +250,10 @@ dose_relative_volume_rois = [
         'name': 'MT_Stomach-ictv,
         'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.5),
         'roi_type': "organ_at_risk",
-        'priority': 2
-        'SE_RE_rob_eval': 'True'
-        'Recomp_all_phases' : 'False'
-        'Accumulate_all_phases' : 'False'
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
     }
 ]
 
