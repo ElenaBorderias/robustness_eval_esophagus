@@ -523,6 +523,7 @@ print(evaluated_doses_respiratory_motion)
 
 def get_all_phase_statistics(dose_phase):
     phase_statistics = {}
+    
     for dose_stat_roi in filter(is_evaluated_for_repiratory_motion, dose_statistics_rois):
         try:
             phase_statistics[get_key(dose_stat_roi)] = get_dose_statistic(dose_phase, dose_stat_roi['name'],
@@ -549,11 +550,14 @@ def get_all_phase_statistics(dose_phase):
 statistics_respiratory_motion = map(get_all_phase_statistics, evaluated_doses_respiratory_motion)
 
 with open(output_path + 'clinical_goals_repiratory_motion_evaluation.txt', 'w+') as f:
-    fieldnames = statistics_respiratory_motion[0].keys()
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    fieldnames = ['phase_name'] + statistics_respiratory_motion[0].keys()
 
-    for stat in statistics_respiratory_motion:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    
+    for idx,stat in enumerate(statistics_respiratory_motion):
         try: 
+            stat['phase_name'] = phases[idx]
             writer.writerow(stat)
         except:
             print("I don't know how to print "+ key + " val "+ results[key])
