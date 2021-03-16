@@ -415,7 +415,7 @@ print("Finished Relative Volume at Dose Value ROI statistics")
 
 print("Writing results...")
 
-output_path = "Z:\\output_path_rob_eval_esophagus\\"
+output_path = "Z:\\output_rob_eval_esophagus\\"
 
 
 with open(output_path + 'data.csv', 'w+') as f:
