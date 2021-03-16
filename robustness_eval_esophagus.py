@@ -157,9 +157,20 @@ dose_statistics_rois = [
         'Accumulate_all_phases' : 'False',
     },
     {
-        'label': 'Kidneys',
+        'label': 'Kidney_L',
         'metric': 'Dmean',
-        'name': 'MT_Kidneys',
+        'name': 'MT_Kidney_L',
+        'doseType': 'Average',
+        'roi_type': "organ_at_risk",
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
+    },
+    {
+        'label': 'Kidney_R',
+        'metric': 'Dmean',
+        'name': 'MT_Kidney_R',
         'doseType': 'Average',
         'roi_type': "organ_at_risk",
         'priority': 2,
@@ -344,9 +355,9 @@ relative_volume_at_dose_level_rois = [
         'Accumulate_all_phases' : 'False',
     },
     {
-        'label': 'Kidneys',
+        'label': 'Kidney_L',
         'metric': 'V20',
-        'name': 'MT_Kidneys',
+        'name': 'MT_Kidney_L',
         'dose_level': 20,
         'roi_type': "organ_at_risk",
         'priority': 2,
@@ -355,9 +366,31 @@ relative_volume_at_dose_level_rois = [
         'Accumulate_all_phases' : 'False',
     },
     {
-        'label': 'Kidneys',
+        'label': 'Kidney_L',
         'metric': 'V6',
-        'name': 'MT_Kidneys',
+        'name': 'MT_Kidney_L',
+        'dose_level': 6,
+        'roi_type': "organ_at_risk",
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
+    },
+    {
+        'label': 'Kidney_R',
+        'metric': 'V20',
+        'name': 'MT_Kidney_R',
+        'dose_level': 20,
+        'roi_type': "organ_at_risk",
+        'priority': 2,
+        'SE_RE_rob_eval': 'True',
+        'Recomp_all_phases' : 'False',
+        'Accumulate_all_phases' : 'False',
+    },
+    {
+        'label': 'Kidney_R',
+        'metric': 'V6',
+        'name': 'MT_Kidney_R',
         'dose_level': 6,
         'roi_type': "organ_at_risk",
         'priority': 2,
@@ -415,14 +448,15 @@ print("Writing results...")
 output_path = "Z:\\output_rob_eval_esophagus\\"
 
 
-with open(output_path + 'data.xls', 'w+') as f:
-    writer = csv.writer(f, dialect = 'excel', delimiter = ',')
+with open(output_path + 'data.txt', 'w+') as f:
+    #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
+    writer = csv.writer(f, delimiter = ',')
     writer.writerow(['roi', 'nominal', 'worst_case'])
     for key in results:
         try: 
             writer.writerow([key, results[key][0], results[key][1]])
         except:
-            print("No se imprimir "+ key + " val "+ results[key])
+            print("I don't know how to print "+ key + " val "+ results[key])
 
 print("Written results!")
 print("Done")
