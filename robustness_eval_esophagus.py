@@ -32,7 +32,7 @@ nb_density_discretization_points = 2
 
 def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume = 0.05):
     
-    eval_setup.AddClinicalGoal(RoiName= oar, GoalCriteria="AtLeast", GoalType="AbsoluteVolumeAtDose", AcceptanceLevel=0, ParameterValue=0, IsComparativeGoal=False, Priority=2147483647)
+    eval_setup.AddClinicalGoal(RoiName= name, GoalCriteria="AtLeast", GoalType="AbsoluteVolumeAtDose", AcceptanceLevel=0, ParameterValue=0, IsComparativeGoal=False, Priority=2147483647)
     index = eval_setup.EvaluationFunctions.Count - 1
     abs_volume = eval_setup.EvaluationFunctions[index].GetClinicalGoalValueForEvaluationDose(DoseDistribution=dose,ScaleFractionDoseToBeamSet=False)
     val_setup.EvaluationFunctions[index].DeleteClinicalGoal()
