@@ -114,6 +114,16 @@ if rssGroup is not None:
 
 discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios) 
 
+
+beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False, AllowGridExpansion=True, ExaminationNames=[ct_ref_name], FractionNumbers=[0], ComputeBeamDoses=True)
+
+for doe in patient.Cases[0].TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations:
+    if doe.OnExamination.Name == ct_ref_name:
+        for eval_dose in doe.DoseEvaluations:
+            if eval_dose.ForBeamSet.DicomPlanLabel == plan_name:
+                evaluation_dose = eval_dose
+
+
 print("Finished RSS Groups")
 
 ##########################################################################
@@ -233,7 +243,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'MT_SpinalCanal',
-        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, rssGroup.DiscreteFractionDoseScenarios[0], 'MT_SpinalCanal', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
         'SE_RE_rob_eval': True,
@@ -244,7 +254,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord_PRV',
         'metric': 'D0_05',
         'name': 'MT_SpinalCan_03',
-        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, rssGroup.DiscreteFractionDoseScenarios[0], 'MT_SpinalCanal', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
         'SE_RE_rob_eval': True,
@@ -255,7 +265,7 @@ dose_relative_volume_rois = [
         'label': 'Body',
         'metric': 'D0_05',
         'name': 'BODY',
-        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, rssGroup.DiscreteFractionDoseScenarios[0], 'BODY', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'BODY', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': True,
@@ -266,7 +276,7 @@ dose_relative_volume_rois = [
         'label': 'Body',
         'metric': 'D1',
         'name': 'BODY',
-        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, nominal_dose, 'BODY', 1.0),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'BODY', 1.0),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': True,
