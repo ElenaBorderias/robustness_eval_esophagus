@@ -47,7 +47,7 @@ def get_dose_at_relative_volume(dose, roi_name, relative_volume):
 def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
     return float(
         dose.GetRelativeVolumeAtDoseValues(RoiName=roi_name,
-                                      DoseValues=[dose_value*100])[0])      
+                                      DoseValues=[dose_value*100])[0]*100)  #dose value feed in cGy   returns relative volume in % 
 
 def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
@@ -448,9 +448,9 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
         descrete_relative_volume_at_dose_stats = map(lambda dose: get_relative_volume_at_dose_value(dose,relative_volume_at_dose_level_roi['name'],
                                                                                                     relative_volume_at_dose_level_roi['dose_level'])*n_fractions,discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
-        results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
-        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
-                                                                       relative_volume_at_dose_level_roi['roi_type']))
+        results[get_key(relative_volume_at_dose_level_roi)].append(round(nominal_relative_volume_at_dose_stat,2))
+        results[get_key(relative_volume_at_dose_level_roi)].append(round(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
+                                                                       relative_volume_at_dose_level_roi['roi_type'])),2)
     except:
         print(relative_volume_at_dose_level_roi['name']+ " does not exist \n")
     
