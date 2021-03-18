@@ -47,7 +47,7 @@ def get_dose_at_relative_volume(dose, roi_name, relative_volume):
 def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
     return round(float(
         dose.GetRelativeVolumeAtDoseValues(RoiName=roi_name,
-                                      DoseValues=[dose_value])[0]), 2)        
+                                      DoseValues=[dose_value*100])[0]), 2)        
 
 def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
