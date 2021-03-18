@@ -36,24 +36,24 @@ def get_key(value):
 
 
 def get_dose_statistic(dose, roi_name, dose_type):
-    return round(dose.GetDoseStatistic(RoiName=roi_name, DoseType=dose_type) * 0.01, 2)
+    return dose.GetDoseStatistic(RoiName=roi_name, DoseType=dose_type) * 0.01
 
 
 def get_dose_at_relative_volume(dose, roi_name, relative_volume):
-    return round(float(
+    return float(
         dose.GetDoseAtRelativeVolumes(RoiName=roi_name,
-                                      RelativeVolumes=[relative_volume])[0]) * 0.01, 2)
+                                      RelativeVolumes=[relative_volume])[0]) * 0.01
 
 def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
-    return round(float(
+    return float(
         dose.GetRelativeVolumeAtDoseValues(RoiName=roi_name,
-                                      DoseValues=[dose_value*100])[0]), 2)        
+                                      DoseValues=[dose_value*100])[0])      
 
 def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
-        return round(min(calculated_doses),2)
+        return min(calculated_doses)
     if roi_type == "organ_at_risk":
-        return round(max(calculated_doses),2)
+        return max(calculated_doses)
 
 def is_evaluated_for_repiratory_motion(clinical_goal_config):
     return clinical_goal_config['Recomp_all_phases']
