@@ -36,7 +36,7 @@ def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume = 0.0
     index = eval_setup.EvaluationFunctions.Count - 1
     abs_volume = eval_setup.EvaluationFunctions[index].GetClinicalGoalValueForEvaluationDose(DoseDistribution=dose,ScaleFractionDoseToBeamSet=False)
     eval_setup.DeleteClinicalGoal(FunctionToRemove = eval_setup.EvaluationFunctions[index])
-    relative_volume = float((goal_volume * 100) / abs_vol)
+    relative_volume = float((goal_volume * 100) / abs_volume)
     return relative_volume
 
 def get_key(value):
