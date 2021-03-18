@@ -205,9 +205,9 @@ for dose_stat_roi in dose_statistics_rois:
         
 
         results[get_key(dose_stat_roi)] = []
-        results[get_key(dose_stat_roi)].append(nominal_dose_statistic)
-        results[get_key(dose_stat_roi)].append(worst_dose(discrete_doses_statistics + [nominal_dose_statistic],
-                                                            dose_stat_roi['roi_type']))
+        results[get_key(dose_stat_roi)].append(round(nominal_dose_statistic,2))
+        results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics + [nominal_dose_statistic],
+                                                            dose_stat_roi['roi_type']),2))
     
     except: 
         print(dose_stat_roi['name'] + " does not exist\n")
