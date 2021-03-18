@@ -25,11 +25,19 @@ nb_density_discretization_points = 2
 
 ######### FUNCTIONS #########
 
-def get_relative_volume_roi_geometries(patient_model, name, goal_volume=0.05):
-    abs_vol = patient_model.RoiGeometries[name].GetRoiVolume()
+#def get_relative_volume_roi_geometries(patient_model, name, goal_volume=0.05):
+    #abs_vol = patient_model.RoiGeometries[name].GetRoiVolume()
+    #relative_volume = float((goal_volume * 100) / abs_vol)
+    #return relative_volume
+
+def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume = 0.05):
+    
+    eval_setup.AddClinicalGoal(RoiName= oar, GoalCriteria="AtLeast", GoalType="AbsoluteVolumeAtDose", AcceptanceLevel=0, ParameterValue=0, IsComparativeGoal=False, Priority=2147483647)
+    index = eval_setup.EvaluationFunctions.Count - 1
+    abs_volume = eval_setup.EvaluationFunctions[index].GetClinicalGoalValueForEvaluationDose(DoseDistribution=dose,ScaleFractionDoseToBeamSet=False))
+    val_setup.EvaluationFunctions[index].DeleteClinicalGoal()
     relative_volume = float((goal_volume * 100) / abs_vol)
     return relative_volume
-
 
 def get_key(value):
     return value['label'] + '_' + value['metric']
@@ -90,6 +98,7 @@ except Exception:
 # Reading a dose
 nominal_dose = plan.PlanOptimizations[0].TreatmentCourseSource.TotalDose
 patient_model = case.PatientModel.StructureSets[ct_ref_name]
+eval_setup = plan.TreatmentCourse.EvaluationSetup
 
 ## Storing Results
 results = {}
@@ -224,7 +233,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord',
         'metric': 'D0_05',
         'name': 'MT_SpinalCanal',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, nominal_dose, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
         'SE_RE_rob_eval': True,
@@ -235,7 +244,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord_PRV',
         'metric': 'D0_05',
         'name': 'MT_SpinalCan_03',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'MT_SpinalCanal', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, nominal_dose, 'MT_SpinalCanal', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
         'SE_RE_rob_eval': True,
@@ -246,7 +255,7 @@ dose_relative_volume_rois = [
         'label': 'Body',
         'metric': 'D0_05',
         'name': 'BODY',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, nominal_dose, 'BODY', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': True,
@@ -257,7 +266,7 @@ dose_relative_volume_rois = [
         'label': 'Body',
         'metric': 'D1',
         'name': 'BODY',
-        'relativeVolume': get_relative_volume_roi_geometries(patient_model, 'BODY', 1.0),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, nominal_dose, 'BODY', 1.0),
         'roi_type': "organ_at_risk",
         'priority': 2,
         'SE_RE_rob_eval': True,
