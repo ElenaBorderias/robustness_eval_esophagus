@@ -67,6 +67,9 @@ def worst_dose(calculated_doses, roi_type):
 def is_evaluated_for_repiratory_motion(clinical_goal_config):
     return clinical_goal_config['Recomp_all_phases']
 
+def is_evaluated_for_SE_RE(clinical_goal_config):
+    return clinical_goal_config['SE_RE_rob_eval']
+
 
 ###############################################################################
 ###############################################################################
@@ -145,11 +148,23 @@ dose_statistics_rois = [
         'Accumulate_all_phases' : False,
     },
     {
-        'label': 'iCTV_45',
+        'label': 'iCTV_45_min',
         'metric': 'Dmean',
         'name': 'MT_iCTVt_4500',
         'doseType': 'Average',
         'roi_type': 'target',
+        'priority': 1,
+        'SE_RE_rob_eval': True,
+        'Recomp_all_phases' : False,
+        'Accumulate_all_phases' : False,
+        
+    },
+    {
+        'label': 'iCTV_45_max',
+        'metric': 'Dmean',
+        'name': 'MT_iCTVt_4500',
+        'doseType': 'Average',
+        'roi_type': 'organ_at_risk',
         'priority': 1,
         'SE_RE_rob_eval': True,
         'Recomp_all_phases' : False,
@@ -214,7 +229,7 @@ dose_statistics_rois = [
     }
 ]
 
-for dose_stat_roi in dose_statistics_rois:
+for dose_stat_roi in filter(is_evaluated_for_SE_RE, dose_statistics_rois):
     try:
         
         nominal_dose_statistic = get_dose_statistic(nominal_dose, dose_stat_roi['name'],
@@ -287,7 +302,7 @@ dose_relative_volume_rois = [
     }
 ]
 
-for dose_relative_volume_roi in dose_relative_volume_rois:
+for dose_relative_volume_roi in filter(is_evaluated_for_SE_RE,dose_relative_volume_rois):
     try: 
         
         nominal_dose_at_relative_volume_stat = get_dose_at_relative_volume(nominal_dose,
@@ -459,7 +474,7 @@ relative_volume_at_dose_level_rois = [
     }
 ]
 
-for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
+for relative_volume_at_dose_level_roi in filter(is_evaluated_for_SE_RE,relative_volume_at_dose_level_rois):
     try: 
         
         nominal_relative_volume_at_dose_stat = get_relative_volume_at_dose_value(nominal_dose,
