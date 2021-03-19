@@ -30,7 +30,7 @@ nb_density_discretization_points = 2
     #relative_volume = float((goal_volume * 100) / abs_vol)
     #return relative_volume
 
-def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume = 0.05):
+def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume):
     
     eval_setup.AddClinicalGoal(RoiName= name, GoalCriteria="AtLeast", GoalType="AbsoluteVolumeAtDose", AcceptanceLevel=0, ParameterValue=0, IsComparativeGoal=False, Priority=2147483647)
     index = eval_setup.EvaluationFunctions.Count - 1
