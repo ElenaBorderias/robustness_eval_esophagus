@@ -36,7 +36,7 @@ def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume):
     index = eval_setup.EvaluationFunctions.Count - 1
     abs_volume = eval_setup.EvaluationFunctions[index].GetClinicalGoalValueForEvaluationDose(DoseDistribution=dose,ScaleFractionDoseToBeamSet=False)
     eval_setup.DeleteClinicalGoal(FunctionToRemove = eval_setup.EvaluationFunctions[index])
-    relative_volume = float((goal_volume * 100) / abs_volume)
+    relative_volume = float((goal_volume) / abs_volume)
     print( name + " = " + str(abs_volume) )
     return relative_volume
 
@@ -257,7 +257,7 @@ dose_relative_volume_rois = [
         'label': 'Spinal_Cord_PRV',
         'metric': 'D0_05',
         'name': 'MT_SpinalCan_03',
-        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'MT_SpinalCanal', 0.05),
+        'relativeVolume': get_relative_volume_roi_geometries(eval_setup, evaluation_dose, 'MT_SpinalCan_03', 0.05),
         'roi_type': "organ_at_risk",
         'priority': 1,
         'SE_RE_rob_eval': True,
@@ -470,7 +470,7 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
                                                                                               'dose_level'])
         
         descrete_relative_volume_at_dose_stats = map(lambda dose: get_relative_volume_at_dose_value(dose,relative_volume_at_dose_level_roi['name'],
-                                                                                                    relative_volume_at_dose_level_roi['dose_level']),discrete_doses)
+                                                                                                    relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions))),discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
         results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
         results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
