@@ -14,7 +14,7 @@ phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
 Dprescription = 45
-n_fractions = 25
+n_fractions = 25.0
 
 # other (thanks :( as in white walkers??????) parameters
 isotropic_pos_uncertainty = False
