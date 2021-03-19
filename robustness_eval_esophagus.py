@@ -493,7 +493,7 @@ with open(output_path + 'clinical_goals_SE_RE_evaluation.txt', 'w+') as f:
     writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
     for key in results:
         try: 
-            writer.writerow([key, results[key][0], results[key][1], results[key][2]])
+            writer.writerow([key, results[key][0], results[key][1]])
         except:
             print("I don't know how to print "+ str(key) + " val "+ str(results[key]))
 
