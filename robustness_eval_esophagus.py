@@ -37,6 +37,7 @@ def get_relative_volume_roi_geometries(eval_setup, dose, name, goal_volume):
     abs_volume = eval_setup.EvaluationFunctions[index].GetClinicalGoalValueForEvaluationDose(DoseDistribution=dose,ScaleFractionDoseToBeamSet=False)
     eval_setup.DeleteClinicalGoal(FunctionToRemove = eval_setup.EvaluationFunctions[index])
     relative_volume = float((goal_volume * 100) / abs_volume)
+    print( name + " = " + str(abs_volume) )
     return relative_volume
 
 def get_key(value):
@@ -227,6 +228,8 @@ for dose_stat_roi in dose_statistics_rois:
         results[get_key(dose_stat_roi)].append(round(nominal_dose_statistic,2))
         results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics + [nominal_dose_statistic],
                                                             dose_stat_roi['roi_type']),2))
+        results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics,
+                                                            dose_stat_roi['roi_type']),2))
     
     except: 
         print(dose_stat_roi['name'] + " does not exist\n")
@@ -298,6 +301,8 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
         results[get_key(dose_relative_volume_roi)] = []
         results[get_key(dose_relative_volume_roi)].append(nominal_dose_at_relative_volume_stat)
         results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat + [nominal_dose_at_relative_volume_stat],
+                                                                       dose_relative_volume_roi['roi_type']))
+        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat,
                                                                        dose_relative_volume_roi['roi_type']))
     except:
         print(dose_relative_volume_roi['name'] + " does not exist\n")
@@ -490,7 +495,7 @@ with open(output_path + 'clinical_goals_SE_RE_evaluation.txt', 'w+') as f:
     writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
     for key in results:
         try: 
-            writer.writerow([key, results[key][0], results[key][1],results[key][2]])
+            writer.writerow([key, results[key][0], results[key][1], results[key][2]])
         except:
             print("I don't know how to print "+ str(key) + " val "+ str(results[key]))
 
