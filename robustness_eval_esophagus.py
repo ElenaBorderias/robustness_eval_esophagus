@@ -470,7 +470,7 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
                                                                                               'dose_level'])
         
         descrete_relative_volume_at_dose_stats = map(lambda dose: get_relative_volume_at_dose_value(dose,relative_volume_at_dose_level_roi['name'],
-                                                                                                    relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions))),discrete_doses)
+                                                                                                    relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions)),discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
         results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
         results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
