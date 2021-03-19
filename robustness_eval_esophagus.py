@@ -13,7 +13,7 @@ ct_ref_name = "Average CT"
 phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
-Dprescription = 45
+Dprescription = 45.0
 n_fractions = 25.0
 
 # other (thanks :( as in white walkers??????) parameters
@@ -228,8 +228,7 @@ for dose_stat_roi in dose_statistics_rois:
         results[get_key(dose_stat_roi)].append(round(nominal_dose_statistic,2))
         results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics + [nominal_dose_statistic],
                                                             dose_stat_roi['roi_type']),2))
-        results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics,
-                                                            dose_stat_roi['roi_type']),2))
+        #results[get_key(dose_stat_roi)].append(round(worst_dose(discrete_doses_statistics,dose_stat_roi['roi_type']),2))
     
     except: 
         print(dose_stat_roi['name'] + " does not exist\n")
@@ -299,11 +298,11 @@ for dose_relative_volume_roi in dose_relative_volume_rois:
                                                                            dose_relative_volume_roi['relativeVolume'])*n_fractions, discrete_doses)
         
         results[get_key(dose_relative_volume_roi)] = []
-        results[get_key(dose_relative_volume_roi)].append(nominal_dose_at_relative_volume_stat)
-        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat + [nominal_dose_at_relative_volume_stat],
-                                                                       dose_relative_volume_roi['roi_type']))
-        results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat,
-                                                                       dose_relative_volume_roi['roi_type']))
+        results[get_key(dose_relative_volume_roi)].append(round(nominal_dose_at_relative_volume_stat,2))
+        results[get_key(dose_relative_volume_roi)].append(round(worst_dose(discrete_dose_at_relative_volume_stat + [nominal_dose_at_relative_volume_stat],
+                                                                       dose_relative_volume_roi['roi_type']),2))
+        
+        #results[get_key(dose_relative_volume_roi)].append(worst_dose(discrete_dose_at_relative_volume_stat,dose_relative_volume_roi['roi_type']))
     except:
         print(dose_relative_volume_roi['name'] + " does not exist\n")
         
@@ -472,11 +471,10 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
         descrete_relative_volume_at_dose_stats = map(lambda dose: get_relative_volume_at_dose_value(dose,relative_volume_at_dose_level_roi['name'],
                                                                                                     relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions)),discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
-        results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
-        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
-                                                                       relative_volume_at_dose_level_roi['roi_type']))
-        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats,
-                                                                       relative_volume_at_dose_level_roi['roi_type']))
+        results[get_key(relative_volume_at_dose_level_roi)].append(round(nominal_relative_volume_at_dose_stat,2))
+        results[get_key(relative_volume_at_dose_level_roi)].append(round(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
+                                                                       relative_volume_at_dose_level_roi['roi_type']),2))
+        #results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats,relative_volume_at_dose_level_roi['roi_type']))
         
     except:
         print(relative_volume_at_dose_level_roi['name']+ " does not exist \n")
@@ -553,22 +551,22 @@ def get_all_phase_statistics(dose_phase):
     
     for dose_stat_roi in filter(is_evaluated_for_repiratory_motion, dose_statistics_rois):
         try:
-            phase_statistics[get_key(dose_stat_roi)] = get_dose_statistic(dose_phase, dose_stat_roi['name'],
-                                                                          dose_stat_roi['doseType'])*n_fractions    
+            phase_statistics[get_key(dose_stat_roi)] = round(get_dose_statistic(dose_phase, dose_stat_roi['name'],
+                                                                          dose_stat_roi['doseType'])*n_fractions,2)    
         except: 
             print(dose_stat_roi['name'] + " does not exist\n")
             
     for dose_relative_volume_roi in filter(is_evaluated_for_repiratory_motion, dose_relative_volume_rois):
         try:
-            phase_statistics[get_key(dose_relative_volume_roi)] = get_dose_at_relative_volume(dose_phase, dose_relative_volume_roi['name'],
-                                                                           dose_relative_volume_roi['relativeVolume'])*n_fractions    
+            phase_statistics[get_key(dose_relative_volume_roi)] = round(get_dose_at_relative_volume(dose_phase, dose_relative_volume_roi['name'],
+                                                                           dose_relative_volume_roi['relativeVolume'])*n_fractions,2)    
         except: 
             print(dose_relative_volume_roi['name'] + " does not exist\n")
             
     for relative_volume_at_dose_level_roi in filter(is_evaluated_for_repiratory_motion, relative_volume_at_dose_level_rois):
         try:
-            phase_statistics[get_key(relative_volume_at_dose_level_roi)] = get_relative_volume_at_dose_value(dose_phase, relative_volume_at_dose_level_roi['name'],
-                                                                          relative_volume_at_dose_level_roi['dose_level'])*n_fractions    
+            phase_statistics[get_key(relative_volume_at_dose_level_roi)] = round(get_relative_volume_at_dose_value(dose_phase, relative_volume_at_dose_level_roi['name'],
+                                                                          relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions)),2)
         except: 
             print(relative_volume_at_dose_level_roi['name'] + " does not exist\n")
             
