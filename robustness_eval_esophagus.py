@@ -470,6 +470,8 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
         results[get_key(relative_volume_at_dose_level_roi)].append(nominal_relative_volume_at_dose_stat)
         results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
                                                                        relative_volume_at_dose_level_roi['roi_type']))
+        results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats,
+                                                                       relative_volume_at_dose_level_roi['roi_type']))
         
     except:
         print(relative_volume_at_dose_level_roi['name']+ " does not exist \n")
@@ -488,7 +490,7 @@ with open(output_path + 'clinical_goals_SE_RE_evaluation.txt', 'w+') as f:
     writer.writerow(['ROI_ClinicalGoal', 'Nominal_scenario', 'Worst-case_scenario'])
     for key in results:
         try: 
-            writer.writerow([key, results[key][0], results[key][1]])
+            writer.writerow([key, results[key][0], results[key][1],results[key][2]])
         except:
             print("I don't know how to print "+ str(key) + " val "+ str(results[key]))
 
