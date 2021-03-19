@@ -472,8 +472,8 @@ for relative_volume_at_dose_level_roi in relative_volume_at_dose_level_rois:
                                                                                                     relative_volume_at_dose_level_roi['dose_level']*(1/n_fractions)),discrete_doses)
         results[get_key(relative_volume_at_dose_level_roi)] = []
         results[get_key(relative_volume_at_dose_level_roi)].append(round(nominal_relative_volume_at_dose_stat,2))
-        results[get_key(relative_volume_at_dose_level_roi)].append(round(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
-                                                                       relative_volume_at_dose_level_roi['roi_type']),2))
+        results[get_key(relative_volume_at_dose_level_roi)].append(round(float(worst_dose(descrete_relative_volume_at_dose_stats+[nominal_relative_volume_at_dose_stat],
+                                                                       relative_volume_at_dose_level_roi['roi_type'])),2))
         #results[get_key(relative_volume_at_dose_level_roi)].append(worst_dose(descrete_relative_volume_at_dose_stats,relative_volume_at_dose_level_roi['roi_type']))
         
     except:
