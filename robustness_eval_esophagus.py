@@ -13,7 +13,7 @@ ct_ref_name = "Average CT"
 phases_group_name = "Phases"
 setup_error = 0.7  # mm
 range_error = 3  # %
-Dprescription = 70
+Dprescription = 45
 n_fractions = 25
 
 # other (thanks :( as in white walkers??????) parameters
@@ -56,7 +56,7 @@ def get_dose_at_relative_volume(dose, roi_name, relative_volume):
 def get_relative_volume_at_dose_value(dose, roi_name, dose_value):
     return float(
         dose.GetRelativeVolumeAtDoseValues(RoiName=roi_name,
-                                      DoseValues=[dose_value*100])[0]*100)  #dose value feed in cGy   returns relative volume in % 
+                                      DoseValues=[dose_value*100])[0])*100  #dose value feed in cGy   returns relative volume in % 
 
 def worst_dose(calculated_doses, roi_type):
     if roi_type == "target":
