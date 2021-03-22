@@ -139,7 +139,7 @@ print("Finished RSS Groups")
 print("Reading Dose Statistics ROIs")
 dose_statistics_rois = [
     {
-        'label': 'CTV_45',
+        'label': 'CTV_5040',
         'metric': 'Dmean',
         'name': 'MT_CTVt_5040',
         'doseType': 'Average',
@@ -150,7 +150,7 @@ dose_statistics_rois = [
         'Accumulate_all_phases' : False,
     },
     {
-        'label': 'iCTV_45_min',
+        'label': 'iCTV_5040_min',
         'metric': 'Dmean',
         'name': 'MT_iCTVt_5040',
         'doseType': 'Average',
@@ -162,7 +162,7 @@ dose_statistics_rois = [
         
     },
     {
-        'label': 'iCTV_45_max',
+        'label': 'iCTV_5040_max',
         'metric': 'Dmean',
         'name': 'MT_iCTVt_5040',
         'doseType': 'Average',
