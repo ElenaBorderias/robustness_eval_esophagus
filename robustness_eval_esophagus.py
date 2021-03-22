@@ -11,10 +11,14 @@ case = get_current("Case")
 plan_name = "elena_test"
 ct_ref_name = "Average CT"
 phases_group_name = "Phases"
+
+Dprescription = 50.40 
+n_fractions = 28.0
+
+output_path = "Z:\\output_rob_eval_esophagus\\" #path where the results are going to be exported
+rss_group_name = "ROB_EVAL_SE_RE" #name of the radiation set for the robust evaluation  
 setup_error = 0.7  # mm
 range_error = 3  # %
-Dprescription = 45.0
-n_fractions = 25.0
 
 # other (thanks :( as in white walkers??????) parameters
 isotropic_pos_uncertainty = False
@@ -80,8 +84,6 @@ def is_evaluated_for_SE_RE(clinical_goal_config):
 plan = case.TreatmentPlans[plan_name]
 beam_set = plan.BeamSets[0]
 
-rss_group_name = "ROB_EVAL_SE_RE"
-
 try:
     beam_set.CreateRadiationSetScenarioGroup(Name=rss_group_name,
                                              UseIsotropicPositionUncertainty=isotropic_pos_uncertainty,
@@ -139,7 +141,7 @@ dose_statistics_rois = [
     {
         'label': 'CTV_45',
         'metric': 'Dmean',
-        'name': 'MT_CTVt_4500',
+        'name': 'MT_CTVt_5040',
         'doseType': 'Average',
         'roi_type': 'target',
         'priority': 1,
@@ -150,7 +152,7 @@ dose_statistics_rois = [
     {
         'label': 'iCTV_45_min',
         'metric': 'Dmean',
-        'name': 'MT_iCTVt_4500',
+        'name': 'MT_iCTVt_5040',
         'doseType': 'Average',
         'roi_type': 'target',
         'priority': 1,
@@ -162,7 +164,7 @@ dose_statistics_rois = [
     {
         'label': 'iCTV_45_max',
         'metric': 'Dmean',
-        'name': 'MT_iCTVt_4500',
+        'name': 'MT_iCTVt_5040',
         'doseType': 'Average',
         'roi_type': 'organ_at_risk',
         'priority': 1,
@@ -332,7 +334,7 @@ relative_volume_at_dose_level_rois = [
     {
         'label': 'iCTV_45',
         'metric': 'V95',
-        'name': 'MT_iCTVt_4500',
+        'name': 'MT_iCTVt_5040',
         'dose_level': 0.95*Dprescription,
         'roi_type': "target",
         'priority': 1,
@@ -343,7 +345,7 @@ relative_volume_at_dose_level_rois = [
     {
         'label': 'CTV_45',
         'metric': 'V95',
-        'name': 'MT_CTVt_4500',
+        'name': 'MT_CTVt_5040',
         'dose_level': 0.95*Dprescription,
         'roi_type': "target",
         'priority': 1,
@@ -499,9 +501,6 @@ print("Finished Relative Volume at Dose Value ROI statistics")
 
 print("Writing results...")
 
-output_path = "Z:\\output_rob_eval_esophagus\\"
-
-
 with open(output_path + 'clinical_goals_SE_RE_evaluation.txt', 'w+') as f:
     #writer = csv.writer(f, dialect = 'excel', delimiter = ',')
     writer = csv.writer(f, delimiter = '\t')
@@ -529,14 +528,14 @@ for it_phase in case.ExaminationGroups[phases_group_name].Items:
 print(phases)
     
 #Recompute nominal dose in all resporatory phases 
-"""
+
 beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False, 
                                      AllowGridExpansion=True, 
                                      ExaminationNames= phases, 
                                      FractionNumbers=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                                      ComputeBeamDoses=True)
 
-"""
+
 #find perturbed doses
 evaluated_doses_respiratory_motion = []
 dicom_plan_label = beam_set.DicomPlanLabel
