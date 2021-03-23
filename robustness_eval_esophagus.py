@@ -123,7 +123,7 @@ discrete_doses = list(rssGroup.DiscreteFractionDoseScenarios)
 
 beam_set.ComputeDoseOnAdditionalSets(OnlyOneDosePerImageSet=False, AllowGridExpansion=True, ExaminationNames=[ct_ref_name], FractionNumbers=[0], ComputeBeamDoses=True)
 
-for doe in patient.Cases[0].TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations:
+for doe in case.TreatmentDelivery.FractionEvaluations[0].DoseOnExaminations:
     if doe.OnExamination.Name == ct_ref_name:
         for eval_dose in doe.DoseEvaluations:
             if eval_dose.ForBeamSet.DicomPlanLabel == plan_name:
